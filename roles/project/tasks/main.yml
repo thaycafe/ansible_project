@@ -1,0 +1,48 @@
+---
+- name: updating apt repo and installing packages
+  apt: 
+    pkg:
+      - python3
+      - python3-pip
+      - gunicorn
+    state: latest
+    update_cache: yes
+
+- name: installing pipenv
+  pip:
+    name: 
+      - pipenv
+      - gdown
+    state: latest
+
+- name: stat folder
+  stat:
+    path: "{{project_dir}}"
+  register: path_exist
+
+- name: downloading project 
+  command: gdown https://drive.google.com/uc?id="{{ id_document }}" -O project.zip
+  when: not path_exist.stat.exists
+  args:
+    chdir: /tmp
+
+- name: creating project folder
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{path}}"
+    - "{{project_dir}}"
+  when: not path_exist.stat.exists
+
+- name: unzip project
+  unarchive:
+    src: /tmp/project.zip
+    dest: "{{path}}/"
+    remote_src: yes
+  when: not path_exist.stat.exists
+
+- name: Run a pipenv install
+  command: pipenv --python 3 install --system --deploy
+  args:
+    chdir: "{{ project_dir }}"

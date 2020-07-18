@@ -1,0 +1,4 @@
+- name: deploying the project
+  command: gunicorn --bind 172.107.46.232:5000 wsgi:app --daemon
+  args:
+    chdir: "{{ project_dir }}"

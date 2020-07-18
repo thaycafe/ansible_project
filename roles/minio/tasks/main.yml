@@ -1,0 +1,40 @@
+- name: installing docker repository key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: checking the docker registration
+  apt_repository: 
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+
+- name: installing docker
+  pip:
+    name: docker
+    state: latest
+
+- name: installing docker
+  apt:
+    name: docker
+    state: latest
+    update_cache: yes
+
+- name: start docker service
+  service:
+    name: docker
+    state: started
+
+- name: create minio container
+  docker_container:
+    image: minio/minio
+    name: minio
+    state: started
+    restart_policy: always
+    command: server /data
+    env:
+      MINIO_BROWSER: "on"
+      MINIO_ACCESS_KEY: "minioproject"
+      MINIO_SECRET_KEY: "instructproject"
+    ports: 9000:9000
+    volumes: '/mnt/data:/data'
+    
