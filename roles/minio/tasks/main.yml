@@ -13,9 +13,12 @@
     name: docker
     state: latest
 
-- name: installing docker
+- name: installing docker in apt package
   apt:
-    name: docker
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
     state: latest
     update_cache: yes
 

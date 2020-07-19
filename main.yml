@@ -1,9 +1,10 @@
 ---
 - hosts: 
-    - myserver
-  remote_user: root
+    - instructserver
+  remote_user: ubuntu
+  become: yes
   environment:
-    S3_URL: http://172.107.46.232:9000
+    S3_URL: http://3.20.186.233:9000
     S3_ACCESS_KEY: minioproject
     S3_SECRET_KEY: instructproject
   roles:

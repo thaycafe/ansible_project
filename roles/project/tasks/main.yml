@@ -5,6 +5,7 @@
       - python3
       - python3-pip
       - gunicorn
+      - unzip
     state: latest
     update_cache: yes
 
@@ -46,3 +47,4 @@
   command: pipenv --python 3 install --system --deploy
   args:
     chdir: "{{ project_dir }}"
+
