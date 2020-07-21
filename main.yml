@@ -2,6 +2,8 @@
 - hosts: 
     - instructserver
   remote_user: ubuntu
+  vars_files:
+    - vars/vault.yml
   environment:
     S3_URL: http://3.20.186.233:9000
     S3_ACCESS_KEY: minioproject
