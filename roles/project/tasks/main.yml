@@ -8,39 +8,26 @@
       - unzip
     state: latest
     update_cache: yes
+  become: yes
 
 - name: installing pipenv
   pip:
     name: 
       - pipenv
-      - gdown
+      - black
     state: latest
+  become: yes
 
 - name: stat folder
   stat:
     path: "{{project_dir}}"
   register: path_exist
 
-- name: downloading project 
-  command: gdown https://drive.google.com/uc?id="{{ id_document }}" -O project.zip
-  when: not path_exist.stat.exists
-  args:
-    chdir: /tmp
+- git:
+    repo: git@gitlab.com:thaygneel/minio-uploader.git
+    dest: "{{project_dir}}"
+    accept_hostkey: yes
 
-- name: creating project folder
-  file:
-    path: "{{ item }}"
-    state: directory
-  loop:
-    - "{{path}}"
-    - "{{project_dir}}"
-  when: not path_exist.stat.exists
-
-- name: unzip project
-  unarchive:
-    src: /tmp/project.zip
-    dest: "{{path}}/"
-    remote_src: yes
   when: not path_exist.stat.exists
 
 - name: Run a pipenv install

@@ -1,4 +1,3 @@
 ---
-project_dir: /srv/minio_uploader
-path: /srv
-id_document: 1ULCM4IHGPjdHN9aFMh95uXmAmU327rOL
+project_dir: ~/www/minio_uploader
+path: ~/www

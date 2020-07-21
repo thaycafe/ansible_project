@@ -2,18 +2,21 @@
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  become: yes
+  
 
 - name: checking the docker registration
   apt_repository: 
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
+  become: yes
 
-- name: installing docker
+- name: installing docker via pip
   pip:
     name: docker
     state: latest
 
-- name: installing docker in apt package
+- name: installing docker via apt
   apt:
     pkg:
       - docker-ce
@@ -21,6 +24,7 @@
       - containerd.io
     state: latest
     update_cache: yes
+  become: yes
 
 - name: start docker service
   service:
@@ -40,4 +44,5 @@
       MINIO_SECRET_KEY: "instructproject"
     ports: 9000:9000
     volumes: '/mnt/data:/data'
+  become: yes
     
